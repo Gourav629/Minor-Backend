@@ -36,7 +36,7 @@ def construct_blueprint(bcrypt):
                 # Token Creating
                 user_token = jwt.encode({'id': str(savedUser[0]), "email": str(savedUser[1]),
                                          "expire": str(datetime.now().date() + timedelta(7))}, os.getenv('SECRET_KEY'),
-                                        algorithm='HS256').decode('utf-8')
+                                        algorithm='HS256')
                 # print(user_token)
                 return Response(json.dumps({"success": {"token": str(user_token), "name": str(savedUser[2])}}),
                                 mimetype='application/json', status=200)
