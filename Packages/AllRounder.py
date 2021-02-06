@@ -15,6 +15,8 @@ class Movies:
         self.actors_table = pd.read_sql_query("SELECT * FROM actors", self.db)
         self.genres_table = pd.read_sql_query("SELECT * FROM genres", self.db)
         self.directors_table = pd.read_sql_query("SELECT * FROM directors", self.db)
+        self.rating_data = pd.read_sql_query("SELECT movie_id, movie_rating FROM Data", self.db)
+        self.rating_data.movie_rating.fillna(0)
 
     # ------------------------- Method to Convert a list into String -------------------------------------------------#
     def array_to_str(self, a):
@@ -187,9 +189,6 @@ class Movies:
         z1 = self.acr_name(a=z).split(",")
         x1 = self.dir_name(a=x).split(",")
         y1 = self.genr_name(a=y).split(",")
-        print(z1)
-        print(x1)
-        print(y1)
         return {
             "id": self.movies_table.loc[self.movies_table.movie_id == a].movie_id.tolist()[0],
             "Title": self.movies_table.loc[self.movies_table.movie_id == a].movies_name.tolist()[0],
@@ -198,7 +197,8 @@ class Movies:
             "Link": self.movies_table.loc[self.movies_table.movie_id == a].movies_link.tolist()[0],
             "Actor": z1,
             "Director":x1,
-            "Category":y1
+            "Category":y1,
+            "Rate": self.rating_data.loc[self.rating_data.movie_id == a].movie_rating.round(1).tolist()[0]
         }
 
     def Full_Actors(self):
